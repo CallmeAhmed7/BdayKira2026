@@ -62,7 +62,7 @@
     <!-- Floating Rose Petals Container -->
     <div id="petals-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
-    <!-- Hidden YouTube Player for Audio -->
+    <!-- Hidden YouTube Player for Global Audio -->
     <div id="youtube-audio" style="display: none;"></div>
 
     <!-- STAGE 1: The Sealed Envelope -->
@@ -111,18 +111,17 @@
             <p class="font-script text-2xl text-[#b54560] mt-1">And forever to go</p>
         </div>
 
-        <!-- Spotify-Styled Music Player (Song Cover Look) -->
+        <!-- Single Spotify-Styled Music Player -->
         <div class="w-full max-w-md bg-white/80 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-[#f2d6de] flex items-center gap-4 mb-10">
             <div class="w-16 h-16 rounded-xl overflow-hidden shadow-md flex-shrink-0 relative">
-                <!-- Using Song Cover Art/Thumbnail instead of heart image -->
-                <img id="player-album-art" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80" alt="Album Art" class="w-full h-full object-cover">
+                <img src="bday.jpg" alt="Album Art" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
                     <i class="fa-brands fa-spotify text-white text-xl"></i>
                 </div>
             </div>
             <div class="flex-grow min-w-0">
-                <h4 id="song-title" class="font-serif font-bold text-sm text-[#3b272a] truncate">Lovesong</h4>
-                <p id="song-artist" class="text-xs text-[#8a6b73] truncate">Adele</p>
+                <p class="text-[10px] text-[#d45d79] uppercase font-bold tracking-widest">Now Playing For You</p>
+                <h4 class="font-serif font-bold text-sm text-[#3b272a] truncate">Lovesong — Adele</h4>
                 <div class="w-full bg-[#f2d6de] h-1.5 rounded-full mt-3 overflow-hidden cursor-pointer" onclick="seekAudio(event)">
                     <div id="progress-bar" class="bg-[#d45d79] h-full w-0 transition-all duration-300"></div>
                 </div>
@@ -200,20 +199,11 @@
             <h2 class="font-serif text-3xl font-bold text-[#fce4ec] mb-2 text-center">My Dearest Love</h2>
             <p class="font-script text-xl text-[#d45d79] text-center mb-8">Until we meet someday...</p>
 
-            <!-- Embedded Song Vibe Mini Player (Song Cover Look) -->
-            <div class="bg-[#1a1113] border border-[#d45d79]/20 rounded-xl p-3 flex items-center gap-3 mb-8">
-                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80" alt="Song Cover" class="w-12 h-12 rounded-lg object-cover">
-                <div>
-                    <p class="text-xs text-[#d45d79] uppercase font-bold tracking-widest">Now Playing Vibe</p>
-                    <p class="font-serif text-sm text-white">Lovesong - Adele</p>
-                </div>
-            </div>
-
             <!-- Letter Content with original text phrasing -->
             <div class="font-garamond text-lg leading-relaxed space-y-6 text-[#f4e8eb]/90">
                 <p>
                     <span class="float-left text-5xl font-serif text-[#d45d79] pr-3 leading-none">E</span>
-<p>Even with the distance and the hours between us, every single day feels brighter just knowing you're in my life. These past thirty days have flown by faster than I ever thought possible, yet every moment feels deeply etched into my heart.</p>
+                    Even with the distance and the hours between us, every single day feels brighter just knowing you're in my life. These past thirty days have flown by faster than I ever thought possible, yet every moment feels deeply etched into my heart.
                 </p>
                 <p>Thank you for your patience, your laughter, your comfort, and for being my absolute safe space across the world. I cherish every message, every call, and every dream we share about closing this gap.</p>
                 <p>Until we meet someday and finally bridge the distance for good, please keep this little piece of my heart safe. I love you more than words could ever capture.</p>
@@ -356,12 +346,11 @@
             }});
         }
 
-        // Audio Player Integration (YouTube Iframe API Mock/Handling for Adele Lovesong)
+        // Audio Player Integration (YouTube Iframe API for Adele Lovesong)
         let isPlaying = false;
         let ytPlayer;
 
         function initAudioPlayer() {
-            // Load YouTube IFrame API script dynamically
             if (!window.YT) {
                 const tag = document.createElement('script');
                 tag.src = "https://www.youtube.com/iframe_api";
@@ -370,7 +359,6 @@
             }
         }
 
-        // Callback for YouTube API
         window.onYouTubeIframeAPIReady = function() {
             ytPlayer = new YT.Player('youtube-audio', {
                 height: '0',
@@ -391,7 +379,6 @@
         function togglePlayPause() {
             const icon = document.getElementById('play-icon');
             if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') {
-                // Fallback simulation if player is loading
                 isPlaying = !isPlaying;
                 icon.className = isPlaying ? "fa-solid fa-pause" : "fa-solid fa-play ml-0.5";
                 if(isPlaying) simulateProgress();
@@ -429,7 +416,7 @@
             progressInterval = setInterval(() => {
                 if (isPlaying && ytPlayer && typeof ytPlayer.getCurrentTime === 'function') {
                     const current = ytPlayer.getCurrentTime();
-                    const duration = ytPlayer.getDuration() || 250; // fallback duration
+                    const duration = ytPlayer.getDuration() || 250;
                     const percent = (current / duration) * 100;
                     document.getElementById('progress-bar').style.width = percent + '%';
                 }
