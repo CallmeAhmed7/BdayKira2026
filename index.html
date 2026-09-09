@@ -1,359 +1,820 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, Kira | 10.09.2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    <style>
-        :root {
-            --bg-color: #1a1113;
-            --card-bg: rgba(30, 18, 21, 0.85);
-            --text-main: #f3e7e8;
-            --text-muted: #d4b2b6;
-            --accent-rose: #d45d79;
-            --border-rose: rgba(212, 93, 121, 0.2);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, My Beloved Kira | 10.09.2026</title>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            position: relative;
-            padding: 2rem 1rem;
-        }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        /* Falling Roses Background Animation */
-        .roses-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
+  <!-- GSAP & Canvas Confetti -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-        .rose-petals {
-            position: absolute;
-            background: rgba(212, 93, 121, 0.15);
-            border-radius: 150% 0 150% 0;
-            animation: fall linear infinite;
-        }
+  <style>
+    :root {
+      --bg-color: #1a1113;
+      --card-bg: rgba(30, 18, 21, 0.85);
+      --text-main: #f3e7e8;
+      --text-muted: #d4b2b6;
+      --accent-rose: #d45d79;
+      --border-rose: rgba(212, 93, 121, 0.2);
+    }
 
-        @keyframes fall {
-            0% {
-                transform: translateY(-10vh) translateX(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(110vh) translateX(100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      perspective: 1200px;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      transition: background-color 1.5s ease;
+    }
+    .font-handwriting {
+      font-family: 'Dancing Script', cursive;
+    }
+    .font-serif {
+      font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+    }
+    .envelope-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .envelope-3d:hover {
+      transform: translateY(-6px) rotateX(6deg) rotateY(-3deg);
+    }
+    .flap-3d {
+      transform-origin: top center;
+      transform-style: preserve-3d;
+    }
+    .spoiler-card {
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .spoiler-card:hover {
+      transform: translateY(-2px) scale(1.01);
+    }
 
-        .container {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 680px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-rose);
-            border-radius: 24px;
-            padding: 3rem 2.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            text-align: center;
-            transition: all 0.5s ease;
-        }
+    /* Candlelight Ambient Flicker Effects */
+    .candle-glow-left {
+      position: fixed;
+      bottom: -100px;
+      left: -100px;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(225, 29, 72, 0.15) 50%, transparent 80%);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.8;
+      animation: candleFlicker 4s infinite alternate ease-in-out;
+    }
+    .candle-glow-right {
+      position: fixed;
+      bottom: -100px;
+      right: -100px;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(225, 29, 72, 0.15) 50%, transparent 80%);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.8;
+      animation: candleFlicker 3.5s infinite alternate-reverse ease-in-out;
+    }
 
-        .stage {
-            display: none;
-        }
+    @keyframes candleFlicker {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+      50% { transform: scale(1.08) translate(-10px, 5px); opacity: 0.9; }
+      100% { transform: scale(0.95) translate(8px, -5px); opacity: 0.65; }
+    }
 
-        .stage.active {
-            display: block;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--accent-rose);
-            background: rgba(212, 93, 121, 0.1);
-            padding: 6px 14px;
-            border-radius: 50px;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(212, 93, 121, 0.2);
-        }
-
-        h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.75rem;
-            font-weight: 400;
-            margin-bottom: 2rem;
-            color: var(--text-main);
-            line-height: 1.2;
-        }
-
-        /* Stage 1: Entry / Envelope Style */
-        .welcome-btn {
-            background: var(--accent-rose);
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-            box-shadow: 0 4px 15px rgba(212, 93, 121, 0.4);
-            margin-top: 1rem;
-        }
-
-        .welcome-btn:hover {
-            transform: scale(1.05);
-            opacity: 0.95;
-        }
-
-        /* Final Stage: Letter & Spotify Player alignment */
-        .final-stage {
-            text-align: left;
-        }
-
-        .spotify-card {
-            background: #121212;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 18px 20px;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-        }
-
-        .spotify-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-
-        .track-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .album-art {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            object-fit: cover;
-            background-color: #282828;
-        }
-
-        .track-details .title {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 2px;
-        }
-
-        .track-details .artist {
-            font-size: 0.85rem;
-            color: #a7a7a7;
-        }
-
-        .track-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .platform-icon {
-            color: #1db954;
-            font-size: 1.25rem;
-        }
-
-        .play-btn {
-            width: 44px;
-            height: 44px;
-            background: #1db954;
-            color: #000;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(29, 185, 84, 0.4);
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .play-btn:hover {
-            transform: scale(1.05);
-            background: #1ed760;
-        }
-
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.75rem;
-            color: #a7a7a7;
-        }
-
-        .progress-bar-bg {
-            flex-grow: 1;
-            height: 4px;
-            background: #4d4d4d;
-            border-radius: 2px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 8%;
-            background: #1db954;
-            border-radius: 2px;
-        }
-
-        .letter-content p {
-            font-size: 1.05rem;
-            line-height: 1.8;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-        }
-
-        .letter-content p::first-letter {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3.5rem;
-            float: left;
-            line-height: 0.8;
-            margin-right: 10px;
-            color: var(--accent-rose);
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 2rem 1.5rem;
-            }
-            h1 {
-                font-size: 2.2rem;
-            }
-        }
-    </style>
+    /* Custom Romantic Scrollbar for Long Letter */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(74, 35, 43, 0.2);
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(230, 185, 194, 0.4);
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(230, 185, 194, 0.7);
+    }
+  </style>
 </head>
-<body>
+<body id="mainBody" class="min-h-screen flex items-center justify-center p-4 sm:p-8 selection:bg-rose-500 selection:text-white relative overflow-x-hidden">
 
-    <!-- Falling Rose Petals Background Container -->
-    <div class="roses-background" id="rosesContainer"></div>
+  <!-- Ambient Canvas Particles (Rose Petals Background) -->
+  <canvas id="ambientCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
-    <div class="container">
-        <!-- STAGE 1: Welcome / Entry -->
-        <div id="stage1" class="stage active">
-            <div class="badge">
-                <i class="fa-solid fa-gift"></i> Special Delivery
-            </div>
-            <h1>For My Dearest Kira</h1>
-            <p style="color: var(--text-muted); margin-bottom: 2rem; font-weight: 300; line-height: 1.6;">
-                A small world built across the distance, just for your special day. Open when you're ready.
-            </p>
-            <button class="welcome-btn" onclick="nextStage()">Open Your Gift</button>
+  <!-- Candlelight Ambient Glow Corners -->
+  <div id="candleLeft" class="candle-glow-left"></div>
+  <div id="candleRight" class="candle-glow-right"></div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="w-full max-w-xl relative z-10 my-8">
+
+    <!-- STAGE 1: SEALED ENVELOPE -->
+    <div id="envelopeStage" class="flex flex-col items-center justify-center cursor-pointer select-none py-12">
+      
+      <div id="envelopeContainer" onclick="openEnvelopeAnimation()" class="envelope-3d relative w-80 sm:w-96 h-56 sm:h-64 bg-[#231217] rounded-3xl border border-rose-500/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center justify-end p-6 overflow-visible backdrop-blur-md">
+        
+        <!-- Animated 3D Flap -->
+        <div id="envelopeFlap" class="flap-3d absolute top-0 left-0 w-full h-1/2 bg-[#2d171d] border-b border-rose-500/30 rounded-t-3xl z-20 flex justify-center items-end pb-2">
+          <!-- Crimson Wax Seal Stamp -->
+          <div id="waxSeal" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-rose-700 via-rose-600 to-rose-500 border-2 border-rose-200/50 shadow-[0_4px_20px_rgba(225,29,72,0.4)] flex items-center justify-center text-2xl transform translate-y-7 transition-transform hover:scale-110">
+            <span class="filter drop-shadow-sm">💌</span>
+          </div>
         </div>
 
-        <!-- STAGE 2: The Final Letter & Spotify Player Experience -->
-        <div id="stage2" class="stage final-stage">
-            <div class="badge">
-                <i class="fa-solid fa-spa"></i> From the bottom of my heart
-            </div>
-
-            <h1>My Dearest Beloved...</h1>
-
-            <!-- Spotify-style Player Card: Adele - Lovesong linking to YouTube -->
-            <div class="spotify-card">
-                <div class="spotify-top">
-                    <div class="track-left">
-                        <img src="bday.jpg" alt="Album Art" class="album-art">
-                        <div class="track-details">
-                            <div class="title">Lovesong</div>
-                            <div class="title artist" style="font-weight:400; font-size:0.85rem; color:#a7a7a7;">Adele</div>
-                        </div>
-                    </div>
-                    <div class="track-right">
-                        <i class="fa-brands fa-spotify platform-icon"></i>
-                        <a href="https://www.youtube.com/watch?v=VlnM4YfLVT4" target="_blank" class="play-btn" title="Listen on YouTube">
-                            <i class="fa-solid fa-play" style="margin-left: 2px;"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="progress-container">
-                    <span>0:02</span>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill"></div>
-                    </div>
-                    <span>3:59</span>
-                </div>
-            </div>
-
-            <div class="letter-content">
-                <p>Did you really think I would let our very first birthday together end with just five short snippets? You know me better than that. Five reasons couldn't even begin to scratch the surface of how deeply grateful I am to have you in my life, nor could they ever capture what you truly mean to me. So take a breath, stay right here with me, and let me tell you everything...</p>
-                
-                <p>Every single day with you feels like a gift I didn't know I was qualified to receive. When I look back at how our paths crossed, at all the hours spent bridging the distance between our worlds, I am endlessly amazed by how naturally you became my home. You've brought a warmth and a light into my life that makes even the ordinary moments feel extraordinary.</p>
-                
-                <p>I love the way your mind works, the brilliance behind your thoughts, and the quiet, fierce passion you carry for the things—and the people—you love. Your laughter is my favorite sound in existence, a sound that has the power to completely turn my world around no matter how heavy things might feel. You listen to me with a patience and a care that makes me feel completely safe, completely seen, and completely yours.</p>
-            </div>
+        <!-- Preview Paper Inside -->
+        <div id="letterPaper" class="absolute top-4 w-[90%] h-[85%] bg-[#1a1113] rounded-2xl p-4 opacity-0 z-10 flex flex-col justify-center items-center text-center border border-rose-500/20">
+          <p class="font-handwriting text-2xl text-rose-400 font-bold">10.09.2026</p>
+          <p class="text-[10px] text-stone-400 mt-1 uppercase tracking-widest font-semibold">Special Delivery</p>
         </div>
+
+        <!-- Envelope Body Cover -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent rounded-3xl z-15 pointer-events-none"></div>
+
+        <!-- Card Label -->
+        <div class="z-20 text-center pb-2">
+          <span class="text-[10px] font-bold uppercase tracking-widest bg-rose-500/10 text-rose-400 px-3 py-1 rounded-full border border-rose-500/25">
+            Happy Birthday, Kira
+          </span>
+          <p class="text-xs text-stone-400 mt-2">
+            Tap the seal to unseal your surprise ✨
+          </p>
+        </div>
+
+      </div>
+
     </div>
 
-    <script>
-        // Multi-stage navigation handler
-        function nextStage() {
-            document.getElementById('stage1').classList.remove('active');
-            document.getElementById('stage2').classList.add('active');
-        }
+    <!-- STAGE 2: OPENED LETTER (OVERVIEW & SECRETS) -->
+    <div id="letterStage" class="hidden bg-[#231217]/90 border border-rose-500/20 rounded-3xl p-6 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl relative opacity-0 transform scale-95 my-4 transition-all duration-700">
+      
+      <!-- Top Accent Line -->
+      <div class="w-full h-1.5 bg-gradient-to-r from-rose-400 via-pink-400 to-red-400 rounded-full mb-8"></div>
 
-        // Generate falling rose petals dynamically
-        const rosesContainer = document.getElementById('rosesContainer');
-        const petalCount = 18;
+      <!-- Header -->
+      <div class="flex justify-between items-start mb-8 border-b border-rose-500/20 pb-6">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-bold font-mono text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">
+              10.09.2026
+            </span>
+            <span class="text-[11px] text-stone-400 font-mono">Until We're Real</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-[#f3e7e8] mt-3 leading-tight font-serif">
+            Happy Birthday, My Beloved Kira! 🥰
+          </h1>
+        </div>
+        <span class="text-3xl animate-bounce">💖</span>
+      </div>
 
-        for (let i = 0; i < petalCount; i++) {
-            const petal = document.createElement('div');
-            petal.classList.add('rose-petals');
+      <!-- SPOTIFY-STYLED PLAYER -->
+      <div class="mb-10 p-4 bg-[#121212] rounded-2xl text-white shadow-lg border border-stone-800">
+        <div class="flex items-center justify-between gap-4">
+          
+          <!-- Album Art & Track Info -->
+          <div class="flex items-center gap-3.5 min-w-0">
+            <img src="bday.jpg" alt="Album Art" class="w-13 h-13 sm:w-14 sm:h-14 rounded-lg object-cover flex-shrink-0 border border-white/10" onError="this.src='https://img.youtube.com/vi/CBlwI6WmMQI/hqdefault.jpg'" />
+            <div class="min-w-0">
+              <h4 class="font-bold text-sm sm:text-base text-white truncate">Lovesong</h4>
+              <p class="text-xs text-stone-400 truncate">Adele</p>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="flex items-center gap-3 flex-shrink-0">
+            <i class="fa-brands fa-spotify text-[#1DB954] text-xl hidden sm:block"></i>
             
-            const size = Math.random() * 12 + 10;
-            petal.style.width = `${size}px`;
-            petal.style.height = `${size * 1.4}px`;
-            petal.style.left = `${Math.random() * 100}%`;
-            petal.style.top = `-${Math.random() * 20}vh`;
-            
-            const duration = Math.random() * 8 + 6;
-            const delay = Math.random() * 5;
-            petal.style.animationDuration = `${duration}s`;
-            petal.style.animationDelay = `${delay}s`;
-            
-            rosesContainer.appendChild(petal);
+            <button onclick="togglePlay()" id="playPauseBtn" aria-label="Play or Pause" class="w-10 h-10 rounded-full bg-[#1DB954] hover:scale-105 active:scale-95 transition-all flex items-center justify-center text-black shadow-md cursor-pointer">
+              <svg id="playIcon" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg id="pauseIcon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Scrubber Progress Bar -->
+        <div class="mt-3.5 flex items-center gap-2.5 text-[10px] font-mono text-stone-400">
+          <span id="currentTime">0:00</span>
+          <div class="flex-1 h-1.5 bg-stone-800 rounded-full overflow-hidden cursor-pointer" onclick="seekAudio(event)" id="progressBarContainer">
+            <div id="progressBar" class="h-full bg-[#1DB954] w-0 transition-all duration-200"></div>
+          </div>
+          <span id="totalDuration">3:59</span>
+        </div>
+      </div>
+
+      <!-- Hidden YouTube Player Div -->
+      <div id="youtube-hidden-player" class="hidden"></div>
+
+      <!-- HEART-SHAPED PHOTO FRAME -->
+      <div class="my-10 text-center">
+        <svg width="0" height="0" class="absolute pointer-events-none">
+          <defs>
+            <clipPath id="heartClipPath" clipPathUnits="objectBoundingBox">
+              <path d="M0.5,0.18 C0.53,0.1 0.59,0.05 0.68,0.05 C0.83,0.05 0.95,0.15 0.95,0.3 C0.95,0.53 0.75,0.68 0.5,0.88 C0.25,0.68 0.05,0.53 0.05,0.3 C0.05,0.15 0.17,0.05 0.32,0.05 C0.41,0.05 0.47,0.1 0.5,0.18 Z" />
+            </clipPath>
+          </defs>
+        </svg>
+
+        <div class="relative w-64 h-64 sm:w-72 sm:h-72 mx-auto group transition-transform duration-500 hover:scale-105 drop-shadow-[0_15px_30px_rgba(225,29,72,0.25)]">
+          <div class="w-full h-full relative" style="clip-path: url(#heartClipPath); -webkit-clip-path: url(#heartClipPath);">
+            <img src="bday.jpg" alt="Us Together" class="w-full h-full object-cover object-center" onError="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="hidden absolute inset-0 bg-rose-900 flex items-center justify-center text-xs text-rose-200 font-bold p-4 text-center">bday.jpg</div>
+          </div>
+
+          <svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full pointer-events-none z-20">
+            <path d="M50,18 C53,10 59,5 68,5 C83,5 95,15 95,30 C95,53 75,68 50,88 C25,68 5,53 5,30 C5,15 17,5 32,5 C41,5 47,10 50,18 Z" fill="none" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+
+        <p class="font-handwriting text-2xl sm:text-3xl text-rose-300 mt-6 font-bold tracking-wide">
+          "10.09.2026 — Our first till eternity &lt;3"
+        </p>
+      </div>
+
+      <!-- Intro Paragraph -->
+      <p class="text-xs sm:text-sm text-stone-300 leading-relaxed mb-6">
+        As this is officially our first birthday celebration together, I thought why not remind my beloved Kira a few reasons I love her ever so much, hehe:
+      </p>
+
+      <!-- SPOILER CARDS -->
+      <div class="space-y-3.5 mb-10" id="reasonsContainer">
+        
+        <!-- Card 1 -->
+        <div id="card-0" onclick="handleReasonClick(0)" class="spoiler-card cursor-pointer p-4 bg-stone-900 text-stone-300 border border-stone-800 rounded-2xl shadow-sm hover:border-rose-400/50 flex items-center justify-between group">
+          <div class="flex items-center gap-3">
+            <span id="badge-0" class="text-rose-400 font-bold text-xs bg-stone-800 border border-stone-700 px-2.5 py-1 rounded-lg">01</span>
+            <span id="title-0" class="text-xs sm:text-sm font-medium tracking-wide">🔒 Tap to reveal secret #1</span>
+          </div>
+          <span id="action-0" class="text-xs text-rose-400 group-hover:translate-x-1 transition-transform">Reveal ✨</span>
+        </div>
+
+        <!-- Card 2 -->
+        <div id="card-1" onclick="handleReasonClick(1)" class="spoiler-card cursor-pointer p-4 bg-stone-900/60 text-stone-500 border border-stone-800/60 rounded-2xl shadow-sm flex items-center justify-between group opacity-75">
+          <div class="flex items-center gap-3">
+            <span id="badge-1" class="text-stone-500 font-bold text-xs bg-stone-800/50 border border-stone-700/50 px-2.5 py-1 rounded-lg">02</span>
+            <span id="title-1" class="text-xs sm:text-sm font-medium tracking-wide">🔒 Secret #2 (Locked)</span>
+          </div>
+          <span id="action-1" class="text-xs text-stone-500">Locked 🔒</span>
+        </div>
+
+        <!-- Card 3 -->
+        <div id="card-2" onclick="handleReasonClick(2)" class="spoiler-card cursor-pointer p-4 bg-stone-900/60 text-stone-500 border border-stone-800/60 rounded-2xl shadow-sm flex items-center justify-between group opacity-75">
+          <div class="flex items-center gap-3">
+            <span id="badge-2" class="text-stone-500 font-bold text-xs bg-stone-800/50 border border-stone-700/50 px-2.5 py-1 rounded-lg">03</span>
+            <span id="title-2" class="text-xs sm:text-sm font-medium tracking-wide">🔒 Secret #3 (Locked)</span>
+          </div>
+          <span id="action-2" class="text-xs text-stone-500">Locked 🔒</span>
+        </div>
+
+        <!-- Card 4 -->
+        <div id="card-3" onclick="handleReasonClick(3)" class="spoiler-card cursor-pointer p-4 bg-stone-900/60 text-stone-500 border border-stone-800/60 rounded-2xl shadow-sm flex items-center justify-between group opacity-75">
+          <div class="flex items-center gap-3">
+            <span id="badge-3" class="text-stone-500 font-bold text-xs bg-stone-800/50 border border-stone-700/50 px-2.5 py-1 rounded-lg">04</span>
+            <span id="title-3" class="text-xs sm:text-sm font-medium tracking-wide">🔒 Secret #4 (Locked)</span>
+          </div>
+          <span id="action-3" class="text-xs text-stone-500">Locked 🔒</span>
+        </div>
+
+        <!-- Card 5 -->
+        <div id="card-4" onclick="handleReasonClick(4)" class="spoiler-card cursor-pointer p-4 bg-stone-900/60 text-stone-500 border border-stone-800/60 rounded-2xl shadow-sm flex items-center justify-between group opacity-75">
+          <div class="flex items-center gap-3">
+            <span id="badge-4" class="text-stone-500 font-bold text-xs bg-stone-800/50 border border-stone-700/50 px-2.5 py-1 rounded-lg">05</span>
+            <span id="title-4" class="text-xs sm:text-sm font-medium tracking-wide">🔒 Secret #5 (Locked)</span>
+          </div>
+          <span id="action-4" class="text-xs text-stone-500">Locked 🔒</span>
+        </div>
+
+      </div>
+
+      <!-- FAKE OUTRO CARD -->
+      <div id="outroNote" class="p-6 bg-rose-950/40 rounded-2xl border-l-4 border-rose-500 mb-8 shadow-sm border border-rose-500/20">
+        <p class="font-handwriting text-xl sm:text-2xl text-rose-200 leading-relaxed">
+          "Thank you for being born on this day, my beloved! I hope we get to celebrate more and more every year—whether it's mine or yours—together till we're real someday... 💖"
+        </p>
+      </div>
+
+      <!-- FAKE END BUTTON PROMPT -->
+      <div class="mb-10 text-center">
+        <button onclick="triggerTrollShift()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-bold text-sm tracking-wide shadow-lg shadow-rose-500/25 transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2.5 mx-auto cursor-pointer">
+          <span>🏁 Click here to end please</span>
+          <span class="text-base">✨</span>
+        </button>
+      </div>
+
+      <!-- Footer Action -->
+      <div class="pt-6 border-t border-rose-500/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
+        <span class="font-semibold text-rose-400 tracking-wide">Forever & Always Yours ❤️</span>
+        <button onclick="closeEnvelopeAnimation()" class="px-4 py-2 rounded-full border border-rose-500/30 hover:border-rose-400 text-rose-300 hover:bg-rose-500/10 transition-all font-medium flex items-center gap-2">
+          Fold & Put Back in Envelope ✉️
+        </button>
+      </div>
+
+    </div>
+
+    <!-- STAGE 3: THE DEEP REAL LETTER (CANDLELIT ATMOSPHERE & ADELE LOVESONG VIBE) -->
+    <div id="realLetterStage" class="hidden fixed inset-0 z-50 overflow-y-auto custom-scrollbar p-4 sm:p-8 flex items-center justify-center opacity-0 transition-opacity duration-1000 bg-[#1a0f12]/95 backdrop-blur-xl">
+      
+      <div id="realLetterCard" class="max-w-2xl w-full my-auto bg-[#231217]/90 border border-[#3d1c24] rounded-2xl p-8 md:p-12 shadow-2xl text-[#f3e8eb] relative transform scale-95 transition-transform duration-1000">
+        
+        <!-- Small top tag / icon -->
+        <div class="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#4a232b] bg-[#2a141a]/60 text-sm text-[#e6b9c2] shadow-sm z-10">
+            <span>🌷</span>
+            <span>From the bottom of my heart</span>
+        </div>
+
+        <!-- Header Section -->
+        <h1 class="font-serif text-4xl md:text-5xl text-[#f7e1e6] mb-8 tracking-tight font-normal">
+          My Dearest Beloved...
+        </h1>
+
+        <!-- Music Vibe Integration (Adele - Lovesong) -->
+        <div class="mb-8 p-4 rounded-xl bg-[#1a0f12]/70 border border-[#3d1c24] flex items-center gap-4 shadow-inner">
+          <div class="w-12 h-12 rounded-lg bg-[#3d1c24] flex items-center justify-center text-xl shrink-0 overflow-hidden">
+            <img src="bday.jpg" alt="Album Art" class="w-full h-full object-cover" onError="this.style.display='none'">
+          </div>
+          <div class="overflow-hidden">
+            <p class="text-xs text-[#e6b9c2] uppercase tracking-wider font-medium">Now Playing for You</p>
+            <p class="text-sm font-medium text-[#f7e1e6] truncate">Lovesong — Adele</p>
+          </div>
+          <a 
+            href="https://www.youtube.com/watch?v=VlnM4YfLVT4" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="ml-auto text-xs px-3 py-1.5 rounded-full bg-[#4a232b] hover:bg-[#5c2a35] text-[#f3e8eb] transition-colors shrink-0"
+          >
+            Listen
+          </a>
+        </div>
+
+        <!-- Letter Body -->
+        <div class="space-y-6 text-[#d8c4c9] leading-relaxed text-base md:text-lg font-light">
+          <p class="first-letter:text-5xl first-letter:font-serif first-letter:text-[#e6b9c2] first-letter:mr-3 first-letter:float-left first-letter:leading-none">
+            Did you really think I would let our very first birthday together end with just five short snippets? You know me better than that. Five reasons couldn't even begin to scratch the surface of how deeply grateful I am to have you in my life, nor could they ever capture what you truly mean to me. So take a breath, stay right here with me, and let me tell you everything...
+          </p>
+
+          <p>
+            Every single day with you feels like a gift I didn't know I was qualified to receive. When I look back at how our paths crossed, at all the hours spent bridging the distance between our worlds, I am endlessly amazed by how naturally you became my home. You’ve brought a warmth and a light into my life that makes even the ordinary moments feel extraordinary.
+          </p>
+
+          <p>
+            I love the way your mind works, the brilliance behind your thoughts, and the quiet, fierce passion you carry for the things—and the people—you love. Your laughter is my favorite sound in existence, a sound that has the power to completely turn my world around no matter how heavy things might feel. You listen to me with a patience and a care that makes me feel completely safe, completely seen, and completely yours.
+          </p>
+
+          <p>
+            I know distance isn't always easy. There are days when the miles feel heavy, when all I want to do is close the gap, pull you close, and celebrate you in person the way you truly deserve. But even with oceans and hours sitting between us, I want you to feel how close you are to my heart today and every day. You are the very first thing I think about when I wake up and the last thought on my mind before I drift off to sleep.
+          </p>
+
+          <p>
+            So on your birthday, my greatest wish is for the universe to give back to you all the kindness, love, and light you so freely pour into the world. May this year bring you closer to your dreams, fill your days with quiet joys, and remind you of how deeply cherished you are.
+          </p>
+
+          <p>
+            Thank you for being you. Thank you for walking into my life, for choosing me, and for loving me the way you do. Having you is the best thing that has ever happened to me, and loving you is the easiest part of my life.
+          </p>
+
+          <p>
+            Happy birthday, my love. Here’s to celebrating you today, and to all the tomorrows we have waiting for us.
+          </p>
+
+          <p>
+            And I want you to remember, long after the candles are blown out and today fades into tomorrow, that no matter how many miles stretch out between us or how loud the world gets, my heart is always anchored to yours. We built something so real out of late-night messages, shared dreams, and the quiet comfort of just knowing the other person is there, even across an ocean and an eight-hour gap.
+          </p>
+
+          <p>
+            I think about all the things we still have to look forward to—the countless inside jokes waiting to be made, the future conversations we haven't even dreamed up yet, and the absolute certainty of a day when "distance" will only be a story we tell about how we started. You make me want to be a better person simply by existing, and loving someone as extraordinary as you is the greatest privilege of my life.
+          </p>
+
+          <p>
+            Thank you for trusting me with your heart, for letting me into your world, and for making every single hurdle feel completely worth it. May this new year of your life bring you as much happiness, peace, and overwhelming love as you constantly bring to mine.
+          </p>
+
+          <!-- Sign-off -->
+          <div class="pt-6 mt-8 border-t border-[#3d1c24]/60 space-y-4">
+            <p class="font-serif italic text-xl text-[#f7e1e6]">
+              Happy birthday, my Kira. Here is to us, to your day, and to all the endless tomorrows we are going to conquer together. I love you, more than words could ever possibly say.
+            </p>
+            <p class="font-serif text-lg text-[#e6b9c2] pt-2">
+              Yours,<br>
+              Ahmed
+            </p>
+          </div>
+        </div>
+
+        <!-- Return Option -->
+        <div class="mt-10 pt-6 border-t border-[#3d1c24]/60 flex justify-center">
+          <button onclick="exitRealLetter()" class="px-6 py-2.5 rounded-full border border-[#4a232b] hover:bg-[#3d1c24] text-[#e6b9c2] text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer">
+            Return to main view ✨
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- REASON SPOTLIGHT MODAL -->
+  <div id="reasonModal" onclick="closeReasonModal(event)" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300">
+    <div id="modalCard" class="bg-[#231217] border-2 border-rose-500/30 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative transform scale-90 transition-transform duration-300 text-[#f3e7e8]">
+      <div class="flex items-center justify-between mb-4">
+        <span id="modalNumber" class="text-xs font-bold font-mono text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">
+          Reason 01
+        </span>
+        <button onclick="hideReasonModal()" class="text-stone-400 hover:text-stone-200 text-xl font-bold p-1 cursor-pointer">✕</button>
+      </div>
+      <p id="modalText" class="text-base sm:text-lg text-[#f3e7e8] font-medium leading-relaxed my-4">
+        <!-- Content inserted dynamically -->
+      </p>
+      <button onclick="hideReasonModal()" class="w-full mt-4 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-semibold text-sm shadow-md transition-all cursor-pointer">
+        Close & Continue 💖
+      </button>
+    </div>
+  </div>
+
+  <!-- LOCKED WARNING MODAL -->
+  <div id="lockedModal" onclick="closeLockedModal(event)" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300">
+    <div id="lockedModalCard" class="bg-[#231217] border-2 border-rose-500/40 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center relative transform scale-90 transition-transform duration-300 text-[#f3e7e8]">
+      <div class="text-4xl mb-3">😜</div>
+      <h3 class="text-lg font-extrabold text-white mb-2">Hold on!</h3>
+      <p class="text-sm text-stone-300 font-medium leading-relaxed mb-6">
+        nuhuh ma'am read the previous reason &gt;;3
+      </p>
+      <button onclick="hideLockedModal()" class="w-full py-2.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-white font-bold text-xs tracking-wider uppercase transition-all shadow-md cursor-pointer">
+        Got it boss 🫡
+      </button>
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // 1. Particle Canvas System (Rose Petals Animation)
+    const canvas = document.getElementById('ambientCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, particles = [];
+    let particleSymbol = '🌹';
+    let particleOpacityMult = 1;
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 48; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 14 + 8,
+        speedY: -(Math.random() * 0.6 + 0.25),
+        speedX: Math.sin(Math.random() * Math.PI) * 0.35,
+        opacity: Math.random() * 0.45 + 0.15,
+        rotation: Math.random() * 360
+      });
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.y += p.speedY;
+        p.x += p.speedX;
+        if (p.y < -20) p.y = height + 20;
+        
+        ctx.save();
+        ctx.globalAlpha = p.opacity * particleOpacityMult;
+        ctx.font = `${p.size}px serif`;
+        ctx.fillText(particleSymbol, p.x, p.y);
+        ctx.restore();
+      });
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    // 2. YouTube Iframe API Integration (Adele - Lovesong ID: VlnM4YfLVT4)
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    let ytPlayer;
+    let isPlaying = false;
+    let isPlayerReady = false;
+    let progressInterval;
+
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('youtube-hidden-player', {
+        height: '0',
+        width: '0',
+        videoId: 'VlnM4YfLVT4',
+        playerVars: {
+          'playsinline': 1,
+          'controls': 0,
+          'enablejsapi': 1,
+          'origin': window.location.origin || '*'
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
         }
-    </script>
+      });
+    }
+
+    function onPlayerReady(event) {
+      isPlayerReady = true;
+      event.target.setVolume(100);
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        isPlaying = true;
+        document.getElementById('playIcon').classList.add('hidden');
+        document.getElementById('pauseIcon').classList.remove('hidden');
+        startProgressTimer();
+      } else {
+        isPlaying = false;
+        document.getElementById('playIcon').classList.remove('hidden');
+        document.getElementById('pauseIcon').classList.add('hidden');
+        clearInterval(progressInterval);
+      }
+    }
+
+    function togglePlay() {
+      if (!ytPlayer || !isPlayerReady) return;
+      if (isPlaying) {
+        ytPlayer.pauseVideo();
+      } else {
+        ytPlayer.unMute();
+        ytPlayer.setVolume(100);
+        ytPlayer.playVideo();
+      }
+    }
+
+    function startProgressTimer() {
+      clearInterval(progressInterval);
+      progressInterval = setInterval(() => {
+        if (ytPlayer && ytPlayer.getCurrentTime && ytPlayer.getDuration) {
+          const current = ytPlayer.getCurrentTime();
+          const total = ytPlayer.getDuration();
+          if (total > 0) {
+            const percent = (current / total) * 100;
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('currentTime').textContent = formatTime(current);
+            document.getElementById('totalDuration').textContent = formatTime(total);
+          }
+        }
+      }, 500);
+    }
+
+    function formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = Math.floor(seconds % 60);
+      return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    }
+
+    function seekAudio(e) {
+      if (!ytPlayer || !ytPlayer.getDuration) return;
+      const container = document.getElementById('progressBarContainer');
+      const rect = container.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const percentage = clickX / width;
+      const total = ytPlayer.getDuration();
+      ytPlayer.seekTo(total * percentage, true);
+    }
+
+    // 3. Reasons Data & Sequential Unlocking
+    const reasons = [
+      "How simply being together makes both of us feel alive, warm, wanted, and needed. You simply make me want to try more.",
+      "How effortlessly you understand me and anchor me across days, weeks, and seasons. You just know how to place warmth and safety in my heart.",
+      "The soothing, real way your voice can quiet the entire world when it's just the two of us. It's like a lullaby reassuring us that everything will be fine and amazing, no matter how hard things get.",
+      "Your gentle heart, your unwavering patience, and the incredibly beautiful way you care for me.",
+      "How no matter the physical distance, being with you makes me feel entirely real. Every single day we wait—as harsh as it gets and as moody as we may feel—we are always there for each other, no matter what."
+    ];
+
+    let unlockedUpTo = 0;
+    const readSecrets = new Array(reasons.length).fill(false);
+
+    function handleReasonClick(index) {
+      if (index > unlockedUpTo) {
+        showLockedModal();
+        return;
+      }
+      openReasonModal(index);
+    }
+
+    function openReasonModal(index) {
+      const modal = document.getElementById('reasonModal');
+      const modalCard = document.getElementById('modalCard');
+      const modalText = document.getElementById('modalText');
+      const modalNumber = document.getElementById('modalNumber');
+
+      modalNumber.textContent = `Reason 0${index + 1}`;
+      modalText.textContent = `"${reasons[index]}"`;
+
+      readSecrets[index] = true;
+
+      if (index === unlockedUpTo && unlockedUpTo < reasons.length - 1) {
+        unlockedUpTo = index + 1;
+      }
+
+      updateReasonCardsUI();
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modalCard.classList.remove('scale-90');
+        modalCard.classList.add('scale-100');
+      }, 10);
+    }
+
+    function updateReasonCardsUI() {
+      for (let i = 0; i < reasons.length; i++) {
+        const card = document.getElementById(`card-${i}`);
+        const badge = document.getElementById(`badge-${i}`);
+        const title = document.getElementById(`title-${i}`);
+        const action = document.getElementById(`action-${i}`);
+
+        if (readSecrets[i]) {
+          card.className = "spoiler-card cursor-pointer p-4 bg-stone-900 text-stone-200 border border-rose-500/40 rounded-2xl shadow-sm flex items-center justify-between group";
+          badge.className = "text-rose-400 font-bold text-xs bg-rose-950/60 border border-rose-500/30 px-2.5 py-1 rounded-lg";
+          title.textContent = `✨ Secret #${i + 1}: Revealed!`;
+          title.className = "text-xs sm:text-sm font-semibold tracking-wide text-rose-300";
+          action.textContent = "View ✨";
+          action.className = "text-xs text-rose-400 font-medium";
+        } else if (i <= unlockedUpTo) {
+          card.className = "spoiler-card cursor-pointer p-4 bg-stone-900 text-stone-300 border border-stone-800 rounded-2xl shadow-sm hover:border-rose-400/50 flex items-center justify-between group opacity-100";
+          badge.className = "text-rose-400 font-bold text-xs bg-stone-800 border border-stone-700 px-2.5 py-1 rounded-lg";
+          title.textContent = `🔒 Tap to reveal secret #${i + 1}`;
+          title.className = "text-xs sm:text-sm font-medium tracking-wide text-stone-200";
+          action.textContent = "Reveal ✨";
+          action.className = "text-xs text-rose-400 group-hover:translate-x-1 transition-transform font-medium";
+        } else {
+          card.className = "spoiler-card cursor-pointer p-4 bg-stone-900/60 text-stone-500 border border-stone-800/60 rounded-2xl shadow-sm flex items-center justify-between group opacity-75";
+          badge.className = "text-stone-500 font-bold text-xs bg-stone-800/50 border border-stone-700/50 px-2.5 py-1 rounded-lg";
+          title.textContent = `🔒 Secret #${i + 1} (Locked)`;
+          title.className = "text-xs sm:text-sm font-medium tracking-wide text-stone-500";
+          action.textContent = "Locked 🔒";
+          action.className = "text-xs text-stone-500";
+        }
+      }
+    }
+
+    function hideReasonModal() {
+      const modal = document.getElementById('reasonModal');
+      const modalCard = document.getElementById('modalCard');
+
+      modal.classList.add('opacity-0');
+      modalCard.classList.remove('scale-100');
+      modalCard.classList.add('scale-90');
+      setTimeout(() => { modal.classList.add('hidden'); }, 300);
+    }
+
+    function closeReasonModal(e) {
+      if (e.target.id === 'reasonModal') hideReasonModal();
+    }
+
+    function showLockedModal() {
+      const modal = document.getElementById('lockedModal');
+      const modalCard = document.getElementById('lockedModalCard');
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modalCard.classList.remove('scale-90');
+        modalCard.classList.add('scale-100');
+      }, 10);
+    }
+
+    function hideLockedModal() {
+      const modal = document.getElementById('lockedModal');
+      const modalCard = document.getElementById('lockedModalCard');
+
+      modal.classList.add('opacity-0');
+      modalCard.classList.remove('scale-100');
+      modalCard.classList.add('scale-90');
+      setTimeout(() => { modal.classList.add('hidden'); }, 300);
+    }
+
+    function closeLockedModal(e) {
+      if (e.target.id === 'lockedModal') hideLockedModal();
+    }
+
+    // 4. Envelope Animations
+    let isOpen = false;
+
+    function openEnvelopeAnimation() {
+      if (isOpen) return;
+      isOpen = true;
+
+      if (ytPlayer && isPlayerReady) {
+        ytPlayer.unMute();
+        ytPlayer.setVolume(100);
+        ytPlayer.playVideo();
+      }
+
+      const tl = gsap.timeline();
+
+      confetti({
+        particleCount: 90,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#e11d48', '#fda4af', '#f43f5e', '#fef08a']
+      });
+
+      tl.to("#waxSeal", { scale: 1.3, opacity: 0, duration: 0.3, ease: "back.in(2)" })
+        .to("#envelopeFlap", { rotateX: -180, duration: 0.6, ease: "power2.inOut" }, "-=0.1")
+        .to("#letterPaper", { opacity: 1, y: -140, zIndex: 30, duration: 0.6, ease: "power3.out" }, "-=0.2")
+        .to("#envelopeStage", { opacity: 0, scale: 0.9, duration: 0.3, display: "none" }, "+=0.1")
+        .set("#letterStage", { display: "block" })
+        .to("#letterStage", { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.1)" });
+    }
+
+    function closeEnvelopeAnimation() {
+      if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+
+      const tl = gsap.timeline();
+
+      tl.to("#letterStage", { opacity: 0, scale: 0.95, duration: 0.3, display: "none" })
+        .set("#envelopeStage", { display: "flex" })
+        .to("#envelopeStage", { opacity: 1, scale: 1, duration: 0.3 })
+        .to("#letterPaper", { y: 0, opacity: 0, duration: 0.3 })
+        .to("#envelopeFlap", { rotateX: 0, duration: 0.4, ease: "power2.inOut" })
+        .to("#waxSeal", { scale: 1, opacity: 1, duration: 0.2 })
+        .call(() => { isOpen = false; });
+    }
+
+    // 5. THE TROLL SHIFT: TRANSITION TO REAL LETTER
+    function triggerTrollShift() {
+      if (ytPlayer && isPlayerReady) {
+        ytPlayer.unMute();
+        ytPlayer.setVolume(100);
+        if (!isPlaying) ytPlayer.playVideo();
+      }
+
+      confetti({
+        particleCount: 40,
+        spread: 60,
+        origin: { y: 0.5 },
+        colors: ['#4a232b', '#e11d48', '#f43f5e']
+      });
+
+      const letterStage = document.getElementById('letterStage');
+      const realLetterStage = document.getElementById('realLetterStage');
+      const realLetterCard = document.getElementById('realLetterCard');
+
+      letterStage.style.opacity = '0';
+      letterStage.style.transform = 'scale(0.95)';
+
+      setTimeout(() => {
+        letterStage.classList.add('hidden');
+        realLetterStage.classList.remove('hidden');
+        
+        setTimeout(() => {
+          realLetterStage.classList.remove('opacity-0');
+          realLetterCard.classList.remove('scale-95');
+          realLetterCard.classList.add('scale-100');
+        }, 50);
+
+      }, 700);
+    }
+
+    function exitRealLetter() {
+      const realLetterStage = document.getElementById('realLetterStage');
+      const realLetterCard = document.getElementById('realLetterCard');
+      const letterStage = document.getElementById('letterStage');
+
+      realLetterStage.classList.add('opacity-0');
+      realLetterCard.classList.remove('scale-100');
+      realLetterCard.classList.add('scale-95');
+
+      setTimeout(() => {
+        realLetterStage.classList.add('hidden');
+        letterStage.classList.remove('hidden');
+        setTimeout(() => {
+          letterStage.style.opacity = '1';
+          letterStage.style.transform = 'scale(1)';
+        }, 50);
+
+      }, 700);
+    }
+  </script>
+
 </body>
 </html>
