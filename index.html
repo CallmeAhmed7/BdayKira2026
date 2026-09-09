@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Dearest Beloved | 10.09.2026</title>
+    <title>Happy Birthday, Kira | 10.09.2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
@@ -76,6 +76,16 @@
             padding: 3rem 2.5rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        .stage {
+            display: none;
+        }
+
+        .stage.active {
+            display: block;
         }
 
         .badge {
@@ -102,7 +112,31 @@
             line-height: 1.2;
         }
 
-        /* Exact Spotify-style Player Card Layout */
+        /* Stage 1: Entry / Envelope Style */
+        .welcome-btn {
+            background: var(--accent-rose);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 4px 15px rgba(212, 93, 121, 0.4);
+            margin-top: 1rem;
+        }
+
+        .welcome-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.95;
+        }
+
+        /* Final Stage: Letter & Spotify Player alignment */
+        .final-stage {
+            text-align: left;
+        }
+
         .spotify-card {
             background: #121212;
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -152,9 +186,8 @@
         }
 
         .platform-icon {
-            color: #1db954; /* Spotify green accent look matching your design */
+            color: #1db954;
             font-size: 1.25rem;
-            text-decoration: none;
         }
 
         .play-btn {
@@ -199,7 +232,7 @@
             top: 0;
             left: 0;
             height: 100%;
-            width: 8%; /* Simulated progress timestamp match */
+            width: 8%;
             background: #1db954;
             border-radius: 2px;
         }
@@ -237,48 +270,69 @@
     <div class="roses-background" id="rosesContainer"></div>
 
     <div class="container">
-        <div class="badge">
-            <i class="fa-solid fa-spa"></i> From the bottom of my heart
+        <!-- STAGE 1: Welcome / Entry -->
+        <div id="stage1" class="stage active">
+            <div class="badge">
+                <i class="fa-solid fa-gift"></i> Special Delivery
+            </div>
+            <h1>For My Dearest Kira</h1>
+            <p style="color: var(--text-muted); margin-bottom: 2rem; font-weight: 300; line-height: 1.6;">
+                A small world built across the distance, just for your special day. Open when you're ready.
+            </p>
+            <button class="welcome-btn" onclick="nextStage()">Open Your Gift</button>
         </div>
 
-        <h1>My Dearest Beloved...</h1>
+        <!-- STAGE 2: The Final Letter & Spotify Player Experience -->
+        <div id="stage2" class="stage final-stage">
+            <div class="badge">
+                <i class="fa-solid fa-spa"></i> From the bottom of my heart
+            </div>
 
-        <!-- Exact Spotify-style Player Card for Adele - Lovesong linking to YouTube -->
-        <div class="spotify-card">
-            <div class="spotify-top">
-                <div class="track-left">
-                    <img src="bday.jpg" alt="Album Art" class="album-art">
-                    <div class="track-details">
-                        <div class="title">Lovesong</div>
-                        <div class="artist">Adele</div>
+            <h1>My Dearest Beloved...</h1>
+
+            <!-- Spotify-style Player Card: Adele - Lovesong linking to YouTube -->
+            <div class="spotify-card">
+                <div class="spotify-top">
+                    <div class="track-left">
+                        <img src="bday.jpg" alt="Album Art" class="album-art">
+                        <div class="track-details">
+                            <div class="title">Lovesong</div>
+                            <div class="title artist" style="font-weight:400; font-size:0.85rem; color:#a7a7a7;">Adele</div>
+                        </div>
+                    </div>
+                    <div class="track-right">
+                        <i class="fa-brands fa-spotify platform-icon"></i>
+                        <a href="https://www.youtube.com/watch?v=VlnM4YfLVT4" target="_blank" class="play-btn" title="Listen on YouTube">
+                            <i class="fa-solid fa-play" style="margin-left: 2px;"></i>
+                        </a>
                     </div>
                 </div>
-                <div class="track-right">
-                    <i class="fa-brands fa-spotify platform-icon"></i>
-                    <a href="https://www.youtube.com/watch?v=VlnM4YfLVT4" target="_blank" class="play-btn" title="Listen on YouTube">
-                        <i class="fa-solid fa-play" style="margin-left: 2px;"></i>
-                    </a>
+                <div class="progress-container">
+                    <span>0:02</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill"></div>
+                    </div>
+                    <span>3:59</span>
                 </div>
             </div>
-            <div class="progress-container">
-                <span>0:02</span>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill"></div>
-                </div>
-                <span>3:59</span>
-            </div>
-        </div>
 
-        <div class="letter-content">
-            <p>Did you really think I would let our very first birthday together end with just five short snippets? You know me better than that. Five reasons couldn't even begin to scratch the surface of how deeply grateful I am to have you in my life, nor could they ever capture what you truly mean to me. So take a breath, stay right here with me, and let me tell you everything...</p>
-            
-            <p>Every single day with you feels like a gift I didn't know I was qualified to receive. When I look back at how our paths crossed, at all the hours spent bridging the distance between our worlds, I am endlessly amazed by how naturally you became my home. You've brought a warmth and a light into my life that makes even the ordinary moments feel extraordinary.</p>
-            
-            <p>I love the way your mind works, the brilliance behind your thoughts, and the quiet, fierce passion you carry for the things—and the people—you love. Your laughter is my favorite sound in existence, a sound that has the power to completely turn my world around no matter how heavy things might feel. You listen to me with a patience and a care that makes me feel completely safe, completely seen, and completely yours.</p>
+            <div class="letter-content">
+                <p>Did you really think I would let our very first birthday together end with just five short snippets? You know me better than that. Five reasons couldn't even begin to scratch the surface of how deeply grateful I am to have you in my life, nor could they ever capture what you truly mean to me. So take a breath, stay right here with me, and let me tell you everything...</p>
+                
+                <p>Every single day with you feels like a gift I didn't know I was qualified to receive. When I look back at how our paths crossed, at all the hours spent bridging the distance between our worlds, I am endlessly amazed by how naturally you became my home. You've brought a warmth and a light into my life that makes even the ordinary moments feel extraordinary.</p>
+                
+                <p>I love the way your mind works, the brilliance behind your thoughts, and the quiet, fierce passion you carry for the things—and the people—you love. Your laughter is my favorite sound in existence, a sound that has the power to completely turn my world around no matter how heavy things might feel. You listen to me with a patience and a care that makes me feel completely safe, completely seen, and completely yours.</p>
+            </div>
         </div>
     </div>
 
     <script>
+        // Multi-stage navigation handler
+        function nextStage() {
+            document.getElementById('stage1').classList.remove('active');
+            document.getElementById('stage2').classList.add('active');
+        }
+
         // Generate falling rose petals dynamically
         const rosesContainer = document.getElementById('rosesContainer');
         const petalCount = 18;
