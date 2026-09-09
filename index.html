@@ -62,7 +62,7 @@
     <!-- Floating Rose Petals Container -->
     <div id="petals-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
-    <!-- Hidden YouTube Player for Global Audio -->
+    <!-- Hidden YouTube Player for Audio -->
     <div id="youtube-audio" style="display: none;"></div>
 
     <!-- STAGE 1: The Sealed Envelope -->
@@ -111,17 +111,17 @@
             <p class="font-script text-2xl text-[#b54560] mt-1">And forever to go</p>
         </div>
 
-        <!-- Single Spotify-Styled Music Player -->
+        <!-- Spotify-Styled Music Player (Song Cover Look) -->
         <div class="w-full max-w-md bg-white/80 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-[#f2d6de] flex items-center gap-4 mb-10">
             <div class="w-16 h-16 rounded-xl overflow-hidden shadow-md flex-shrink-0 relative">
-                <img src="bday.jpg" alt="Album Art" class="w-full h-full object-cover">
+                <img id="player-album-art" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80" alt="Album Art" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
                     <i class="fa-brands fa-spotify text-white text-xl"></i>
                 </div>
             </div>
             <div class="flex-grow min-w-0">
-                <p class="text-[10px] text-[#d45d79] uppercase font-bold tracking-widest">Now Playing For You</p>
-                <h4 class="font-serif font-bold text-sm text-[#3b272a] truncate">Lovesong — Adele</h4>
+                <h4 id="song-title" class="font-serif font-bold text-sm text-[#3b272a] truncate">Lovesong</h4>
+                <p id="song-artist" class="text-xs text-[#8a6b73] truncate">Adele</p>
                 <div class="w-full bg-[#f2d6de] h-1.5 rounded-full mt-3 overflow-hidden cursor-pointer" onclick="seekAudio(event)">
                     <div id="progress-bar" class="bg-[#d45d79] h-full w-0 transition-all duration-300"></div>
                 </div>
@@ -198,6 +198,15 @@
 
             <h2 class="font-serif text-3xl font-bold text-[#fce4ec] mb-2 text-center">My Dearest Love</h2>
             <p class="font-script text-xl text-[#d45d79] text-center mb-8">Until we meet someday...</p>
+
+            <!-- Embedded Song Vibe Mini Player (Song Cover Look) -->
+            <div class="bg-[#1a1113] border border-[#d45d79]/20 rounded-xl p-3 flex items-center gap-3 mb-8">
+                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80" alt="Song Cover" class="w-12 h-12 rounded-lg object-cover">
+                <div>
+                    <p class="text-xs text-[#d45d79] uppercase font-bold tracking-widest">Now Playing Vibe</p>
+                    <p class="font-serif text-sm text-white">Lovesong - Adele</p>
+                </div>
+            </div>
 
             <!-- Letter Content with original text phrasing -->
             <div class="font-garamond text-lg leading-relaxed space-y-6 text-[#f4e8eb]/90">
